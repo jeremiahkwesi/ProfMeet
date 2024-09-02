@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNUST Student-Lecturer Meeting Scheduler</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <img src="/images/knust.jpg" alt="KNUST Logo" class="logo">
+        <h1>KNUST ProfMeet</h1>
+        <nav>
+            <% if (locals.user) { %>
+                <a href="/profile">Profile</a>
+                <a href="/logout">Logout</a>
+            <% } else { %>
+                <a href="/">Home</a>
+                <a href="/login">Login</a>
+                <a href="/signup">Signup</a>
+            <% } %>
+        </nav>
+    </header>
+    <main>
+        <%- body %>
+    </main>
+    <footer>
+        <p>&copy; 2024 KNUST ProfMeet</p>
+    </footer>
+</body>
+</html>

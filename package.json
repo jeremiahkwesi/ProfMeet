@@ -1,0 +1,31 @@
+{
+  "name": "student-lecturer-scheduler",
+  "version": "1.0.0",
+  "description": "A web application for scheduling meetings between students and lecturers",
+  "main": "app.js",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.5.3"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "student",
+    "lecturer",
+    "scheduler",
+    "meeting",
+    "appointment"
+  ],
+  "author": "Jeremiah Kwesi Afful",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

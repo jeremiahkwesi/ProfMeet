@@ -1,0 +1,42 @@
+
+<h2>Welcome, <%= student.firstName %></h2>
+<a href="/profile" class="btn">Edit Profile</a>
+
+<h3>Search for Lecturers</h3>
+<form action="/student/search-lecturers" method="GET">
+    <input type="text" name="search" placeholder="Search by name or department">
+    <button type="submit">Search</button>
+</form>
+
+<% if (locals.lecturers && lecturers.length > 0) { %>
+    <h4>Lecturers</h4>
+    <ul>
+    <% lecturers.forEach(lecturer => { %>
+        <li>
+            <%= lecturer.firstName %> <%= lecturer.lastName %> - <%= lecturer.department %>
+            <form action="/student/request-meeting" method="POST">
+                <input type="hidden" name="lecturerId" value="<%= lecturer._id %>">
+                <textarea name="reason" placeholder="Reason for meeting" required></textarea>
+                <button type="submit">Request Meeting</button>
+            </form>
+        </li>
+    <% }) %>
+    </ul>
+<% } %>
+
+<h3>Your Meeting Requests</h3>
+<ul>
+<% requests.forEach(request => { %>
+    <li class="meeting-request <%= request.status %>">
+        <p>Lecturer: <%= request.lecturer.firstName %> <%= request.lecturer.lastName %></p>
+        <p>Reason: <%= request.reason %></p>
+        <p>Status: <%= request.status %></p>
+        <% if (request.status === 'accepted') { %>
+            <p>Time: <%= request.meetingTime %></p>
+            <p>Venue: <%= request.meetingVenue %></p>
+        <% } else if (request.status === 'declined') { %>
+            <p>Reason for decline: <%= request.declineReason %></p>
+        <% } %>
+    </li>
+<% }) %>
+</ul>

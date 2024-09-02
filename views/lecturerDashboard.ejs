@@ -1,0 +1,73 @@
+<h2>Welcome, <%= lecturer.firstName %></h2>
+
+<a href="/profile" class="btn">Edit Profile</a>
+
+<h3>Meeting Requests</h3>
+<ul>
+    <% requests.forEach(request => { %>
+        <li class="meeting-request <%= request.status %>">
+            <p>Student: <%= request.student.firstName %> <%= request.student.lastName %></p>
+            <p>Reason: <%= request.reason %></p>
+            <p>Status: <%= request.status %></p>
+            <% if (request.status === 'pending') { %>
+                <form action="/lecturer/respond-to-request" method="POST">
+                    <input type="hidden" name="requestId" value="<%= request._id %>">
+                    <select name="status_<%= request._id %>" required>
+                        <option value="accepted">Accept</option>
+                        <option value="declined">Decline</option>
+                    </select>
+                    <div id="acceptFields_<%= request._id %>" style="display: none;">
+                        <label for="meetingTime_<%= request._id %>">Meeting Time:</label>
+                        <input type="datetime-local" id="meetingTime_<%= request._id %>" name="meetingTime" required>
+                        <label for="meetingVenue_<%= request._id %>">Meeting Venue:</label>
+                        <input type="text" id="meetingVenue_<%= request._id %>" name="meetingVenue" placeholder="Meeting Venue" required>
+                    </div>
+                    <div id="declineFields_<%= request._id %>" style="display: none;">
+                        <label for="declineReason_<%= request._id %>">Reason for Declining:</label>
+                        <textarea id="declineReason_<%= request._id %>" name="declineReason" placeholder="Reason for declining" required></textarea>
+                    </div>
+                    <button type="submit">Respond</button>
+                </form>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const requestId = '<%= request._id %>';
+                        const selectElement = document.querySelector(`select[name="status_<%= request._id %>"]`);
+                        const acceptFields = document.getElementById(`acceptFields_${requestId}`);
+                        const declineFields = document.getElementById(`declineFields_${requestId}`);
+
+                        if (selectElement) {
+                            selectElement.addEventListener('change', function() {
+                                if (this.value === 'accepted') {
+                                    acceptFields.style.display = 'block';
+                                    declineFields.style.display = 'none';
+                                } else if (this.value === 'declined') {
+                                    acceptFields.style.display = 'none';
+                                    declineFields.style.display = 'block';
+                                } else {
+                                    acceptFields.style.display = 'none';
+                                    declineFields.style.display = 'none';
+                                }
+                            });
+                        }
+                    });
+                </script>
+            <% } else if (request.status === 'accepted') { %>
+                <p>Meeting Time: <%= request.meetingTime %></p>
+                <p>Meeting Venue: <%= request.meetingVenue %></p>
+            <% } else if (request.status === 'declined') { %>
+                <p>Reason for Declining: <%= request.declineReason %></p>
+            <% } %>
+        </li>
+    <% }) %>
+</ul>
+
+<h3>Scheduled Meetings</h3>
+<ul>
+    <% requests.filter(request => request.status === 'accepted').forEach(request => { %>
+        <li class="scheduled-meeting">
+            <p>Meeting with <%= request.student.firstName %> <%= request.student.lastName %></p>
+            <p>Meeting Time: <%= request.meetingTime %></p>
+            <p>Meeting Venue: <%= request.meetingVenue %></p>
+        </li>
+    <% }) %>
+</ul>
